@@ -95,5 +95,17 @@ map(id_nums,id_age_gender())
 
 5. 自定义函数实现经典猜数游戏：随机生成一个0~300的整数，玩家共有5次机会，每次猜数都会返回提示：猜大了还是猜小了，并提示玩家还胜几次机会。
 提示：借助函数readline()接受用户输入。
+```{r}
+hidden_number <- 3 #sample(0:6,size=1)
+guess_num <- readline(prompt = "please input a number ")
+while (guess_num!=hidden_number) {
+  
+}
+if(guess_num > hidden_number)
+  {readline(prompt = "please input a smaller number ")
+}else if(guess_num > hidden_number){
+  readline(prompt = "please input a larger number ")  
+}
+else{print("You win")}
 
 
