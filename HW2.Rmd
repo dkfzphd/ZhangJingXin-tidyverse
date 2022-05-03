@@ -24,10 +24,10 @@ library(lubridate)
 
 ```{r}
 set.seed(1)
-courses <- c("Math","R-prog", "English", "Biochemistry", "Music", "Sport", "Art","Presentation skill",NA)
-courses_me <- sample(courses, size = 30,  replace = TRUE)
-courses_me <- matrix(courses_me, ncol = 5,nrow = 6)
-colnames(courses_me) <- c("Monday","Tuesday", "Wednesday","Thursday","Friday")
+courses <- c("Math", "R-prog", "English", "Biochemistry", "Music", "Sport", "Art", "Presentation skill", NA)
+courses_me <- sample(courses, size = 30, replace = TRUE)
+courses_me <- matrix(courses_me, ncol = 5, nrow = 6)
+colnames(courses_me) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 table(courses_me) # count each course
 ```
 
