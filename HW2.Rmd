@@ -1,0 +1,48 @@
+---
+title: "HW2"
+author: "ManBuXiaoCun"
+date: '2022-05-03'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(lubridate)
+```
+
+第二周作业
+1. 将你本学期的课表创建为数据框并输出，然后
+    (1) 筛选周一、周三的课程
+(2) 筛选3-4节的课程
+(3) 将“节次”列转化为因子
+(4) 计算每天有多少学时的课程
+
+```{r}
+set.seed(1)
+courses <- c("Math","R-prog", "English", "Biochemistry", "Music", "Sport", "Art","Presentation skill",NA)
+courses_me <- sample(courses, size = 30,  replace = TRUE)
+courses_me <- matrix(courses_me, ncol = 5,nrow = 6)
+colnames(courses_me) <- c("Monday","Tuesday", "Wednesday","Thursday","Friday")
+table(courses_me) # count each course
+```
+
+
+2. 用合适的函数识别以下日期：
+"15 March 2021 02pm"
+"04/29/18 02:49"
+"Fri Feb  9 2018 14:49:32"
+3. 完成以下字符串操作：
+(1)	生成字符向量："y_1" "y_2" "y_3" "y_4"
+(2)	用字符向量保存下面地址数据，并将地址分为街道和城市两部分：
+"14 Pine Street, Los Angeles", "152 Redwood Street, Seattle", "8 Washington Boulevard, New York"
+(3)	查找(2)中字符串中的字母a，并替换为x
+(4)	用正则表达式提取“城市”
+4. 根据某某某的身份证号（用假的）计算性别、年龄，设计格式化输出：
+            姓名：…
+性别：…
+年龄：….
