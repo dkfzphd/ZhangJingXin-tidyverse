@@ -1,0 +1,99 @@
+---
+title: "HW3"
+author: "ManBuXiaoCun"
+date: '2022-05-03'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(glue)
+library(tidyverse)
+library(lubridate)
+library(stringr)
+```
+
+第三周作业
+说明：自定义函数至少做一组测试
+
+1. 自定义函数根据身高、体重，计算BMI以及按国内标准的分类。
+注：使用多返回值，附
+BMI = kg/m2
+If your BMI is less than 18.5, it falls within the **underweight** range.
+If your BMI is 18.5 to 24.9, it falls within the **normal** or Healthy Weight range.
+If your BMI is 25.0 to 29.9, it falls within the **overweight** range.
+If your BMI is 30.0 or higher, it falls within the **obese** range.
+```{r}
+bmi <- function(height = 180, weight = 80){
+  bmi_index <- weight/(height/100)^2
+  bmi_index <- round(bmi_index, digits = 2)
+  if (bmi_index < 18.5 ){
+   glue(" BMI IS {bmi_index}, underweight")
+    
+  } else if (bmi_index < 24.9 ){
+    glue(" BMI IS {bmi_index}, normal")
+    
+  } else if(bmi_index < 29.9 ){
+   glue(" BMI IS {bmi_index}, overweight")
+    
+  } else {
+    glue(" BMI IS {bmi_index}, obese")
+  }
+  
+  
+}
+```
+
+
+2. 根据课表数据框，
+(1) 用for循环计算每天的学时数；
+(2) 自定义函数，根据课表数据框计算每天学时数。
+
+3. 自定义函数根据身份证号，计算两种年龄、性别。
+   注：使用默认参数和多返回值。
+```{r}
+# id has to be in quote when using the function
+# unknown how to handle the custmize err message to remind function user 
+  id_age_gender <- function(id="51162119920320211X"){
+  
+  # age
+  birthday <- str_sub(id, start = 7,end = 14)
+  birthday <- ymd(birthday) # change into year month day
+  age <- year(today())-year(birthday)
+  # gender
+  gender_num <- str_sub(id, start = 17,end = 17) # extract gender identity num
+  gender_num <- as.numeric(gender_num) # convert character to number
+  gender <- if_else(gender_num %% 2 == 0,"Female","Male") # convert num to male and female
+  
+  # output part
+  glue("This year is {year(today())},You are {age} years old, Gender: {gender}")
+  
+}
+```
+
+
+4. 将第3题中的函数做向量化改进：
+(1) 修改函数体，使其接受向量化输入
+(2) 借助map系列实现
+并用随机生成的3个身份证号测试：
+"11022119920110474X"
+"230702198105052397" 
+"142625199601063388"
+```{r}
+# not solved yet
+id_nums <- list("11022119920110474X",
+"230702198105052397", 
+"142625199601063388")
+map(id_nums,id_age_gender())
+```
+
+
+5. 自定义函数实现经典猜数游戏：随机生成一个0~300的整数，玩家共有5次机会，每次猜数都会返回提示：猜大了还是猜小了，并提示玩家还胜几次机会。
+提示：借助函数readline()接受用户输入。
+
+
