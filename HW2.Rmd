@@ -13,22 +13,38 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(lubridate)
+library(tidyverse)
 ```
 
 第二周作业
 1. 将你本学期的课表创建为数据框并输出，然后
-    (1) 筛选周一、周三的课程
+(1) 筛选周一、周三的课程
 (2) 筛选3-4节的课程
 (3) 将“节次”列转化为因子
 (4) 计算每天有多少学时的课程
 
 ```{r}
+# 1
 set.seed(1)
 courses <- c("Math", "R-prog", "English", "Biochemistry", "Music", "Sport", "Art", "Presentation skill", NA)
 courses_me <- sample(courses, size = 30, replace = TRUE)
 courses_me <- matrix(courses_me, ncol = 5, nrow = 6)
 colnames(courses_me) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+mon_wen_courses <- courses_me [ ,c("Monday","Wednesday")]
+
+# 2
 table(courses_me) # count each course
+count_courses <- as.data.frame(table(courses_me)) #change into data.frame
+courses_3or4 <- count_courses %>% filter(Freq==3 | Freq==4)
+courses_3or4
+
+# 3
+count_courses$Freq <- as.factor(count_courses$Freq)
+count_courses
+
+# 4 assume one course time is 1 hour 
+sum(table(courses_me))
+
 ```
 
 
@@ -36,13 +52,83 @@ table(courses_me) # count each course
 "15 March 2021 02pm"
 "04/29/18 02:49"
 "Fri Feb  9 2018 14:49:32"
+```{r}
+ymd_hm("15 March 2021 02pm")
+ymd_hm("04/29/18 02:49")
+ymd_hms("Fri Feb  9 2018 14:49:32")
+```
+
+
 3. 完成以下字符串操作：
 (1)	生成字符向量："y_1" "y_2" "y_3" "y_4"
 (2)	用字符向量保存下面地址数据，并将地址分为街道和城市两部分：
 "14 Pine Street, Los Angeles", "152 Redwood Street, Seattle", "8 Washington Boulevard, New York"
 (3)	查找(2)中字符串中的字母a，并替换为x
 (4)	用正则表达式提取“城市”
-4. 根据某某某的身份证号（用假的）计算性别、年龄，设计格式化输出：
-            姓名：…
-性别：…
-年龄：….
+.
+```{r}
+# 1
+chac_y <- paste("y",1:4,sep = "_") # or
+chac_y_1 <- str_c("y", 1:4, sep = "_")
+
+# 2
+library(stringr)
+address <-c("14 Pine Street, Los Angeles", "152 Redwood Street, Seattle", "8 Washington Boulevard, New York")
+address_split_comma <- str_split(address, ",")
+
+city <- rep(NULL, length(address))
+street <- rep(NULL, length(address))
+for (i in 1:length(address)) {
+  city[i] <- address_split_comma[[i]][2] 
+  street[i] <- address_split_comma[[i]][1] 
+}
+
+df_addr <- data.frame(city,street)
+df_addr
+
+# 3
+address # origin words
+str_replace(address, "[a]", "x") # replace "a" with "x"
+
+# 4
+Not yet
+```
+4. 根据某某某的身份证号（用假的）计算性别、年龄，设计格式化输出:\
+姓名：… \
+性别：… \
+年龄：… \
+(身份证号特点:\
+（身份证号码第一位到第六位）公民身份号码是特征组合码，由十七位数字本体码和一位校验码组成。排列顺序从左至右依次为：六位数字地址码，八位数字出生日期码，三位数字顺序码和一位数字校验码。第15位代表性别，奇数为男，偶数为女。)
+```{r}
+
+# fake id_card generation
+id_card <- tribble(~name, ~id,
+                   "Li Ming","140525199009207515",
+                   "Run Tu", "51162119920320211X",
+                   "Gao Ya", "610126197208247528")
+
+# figure out birthday, gender by str_sub
+birthday <- str_sub(id_card$id, start = 7,end = 14)
+birthday <- ymd(birthday) # change into year month day
+
+gender_num <- str_sub(id_card$id, start = 17,end = 17) # extract gender identity num
+gender_num <- as.numeric(gender_num) # convert character to number
+
+gender <- if_else(gender_num %% 2 == 0,"Female","Male") # convert num to male and female
+
+id_card <- id_card %>% mutate("birthday" = birthday, "gender" = gender)
+
+age <- year(today())-year(id_card$birthday)
+id_card <- id_card %>% mutate("age" = age)
+
+# unsolve format output
+pmap_chr(list(id_card$name, id_card$gender, id_card$age),
+         function(a, b, c) 
+             glue("Name:  {a} " ,
+                  "Gender: {b} ", 
+                  "Age: {c}"  
+                  )
+         )
+```
+
+
