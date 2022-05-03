@@ -109,12 +109,13 @@ if(guess_num > hidden_number)
 else{print("You win")}
 
 ```
+
 EXAMPLES from website
 https://setscholars.net/r-examples-for-beginners-guess-a-random-number-game-in-r/
 ```{r}
 readinteger <- function()
 { 
-  n <- readline(prompt="Enter an integer: ")
+  n <- readline(prompt="Enter an integer [1,300]: ")
   if(!grepl("^[0-9]+$",n))
   {
     return(readinteger())
@@ -127,7 +128,7 @@ readinteger <- function()
 num <- sample(1:300,size = 1)
 guess <- -1
 
-cat("Guess a number between 0 and 100.n")
+cat("Guess a number between 0 and 300.n")
 
 while(guess != num)
 { 
