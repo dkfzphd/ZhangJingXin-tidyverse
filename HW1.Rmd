@@ -1,0 +1,92 @@
+---
+title: "HW1"
+author: "ManBuXiaoCun"
+date: '2022-05-03'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library in need}
+library(glue)
+```
+
+作业1
+1. 搭建R+RStudio环境
+- 略.\
+
+2. 创建R Project，用相对路径读取“儿童身高体重数据.csv”
+```{r}
+# library(readr) read_csv()
+
+```
+
+3. 用数值：20,74,47,58,79,18,93,91,61,59创建向量，并
+   (1) 找出第2大的值；
+   (2) 给定n，找出第n大的值；
+   (3) 对落在[50,80]之间的数计数；
+   (4) 访问向量最后一个值；
+   (5) 从头开始，每间隔2值提取1个值。
+```{r}
+# Answer 1
+# generate a vector contains all the numbers
+numdata <- c(20,74,47,58,79,18,93,91,61,59)
+
+# sort them from small to big
+numdata_sorted <- sort(numdata, decreasing = TRUE) 
+numdata_sorted
+
+# find the 2nd largest value
+second_largest_num <- numdata_sorted[2]
+second_largest_num
+
+# Answer 2
+n <- 4
+numdata_n_largest <- numdata_sorted[n]
+glue('The {n} largest number in [20,74,47,58,79,18,93,91,61,59] is {numdata_n_largest}.')
+
+# Answer 3
+length(numdata[numdata>=50 & numdata<=80])
+
+# Answer 4
+tail(numdata, n=1) # or numdata[length(numdata)]
+
+# Answer 5
+numdata[seq(1,length(numdata),by=3)]
+```
+   
+4. 某人存入10000 元1 年期定期存款，年利率3%, 约定到期自动转存（包括利息）。问（保留3位小数）：
+(1) 10 年后本息共多少元？
+(2) 需要存多少年这10000 元才能增值到20000 元？
+```{r}
+# 1
+money <- 1e4
+total_money_10year <- money*(1+0.03)^10
+round(total_money_10year, digits = 3)
+# 2
+total_money <- 2e4
+year_needed <- log(total_money/money) / log((1+0.03)) 
+year_needed <-round(year_needed, digits = 3)
+glue("Under 3% interest with {money} yuan, \
+     you can get {total_money} yuan after {year_needed} years in the bank.")
+```
+
+
+5. 生成[0,1]区间上等间隔的100个数存入变量x中，将x转化为20×5的矩阵，存为y. 将x和y保存为一个R数据文件，并练习载入数据。
+```{r}
+x <- seq(0,1,length = 100)
+y <- matrix(x,nrow = 20, ncol = 5)
+saveRDS(y, file = "data/matrix_y.rds")
+```
+
+6. 对指标数据，比如记为 ，做归一化时常用：
+       正向指标：
+ 
+       负向指标：
+ 
+以向量第4题中的向量为例。
+
